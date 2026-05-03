@@ -31,9 +31,8 @@ public abstract class NickRenderMixin<T extends Entity> {
             MatrixStack matrices,
             VertexConsumerProvider vertexConsumers,
             int light,
-            float tickDelta,
             CallbackInfo ci
     ) {
-        // injection point confirmed working
+        // injection point working
     }
 }
