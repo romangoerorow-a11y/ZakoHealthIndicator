@@ -15,13 +15,13 @@ public class HealthBarGUI {
 
     private final MinecraftClient client;
     private long lastAttack = 0;
-    private PlayerEntity player;
+    private LivingEntity target;
 
     public HealthBarGUI(MinecraftClient client) {
         this.client = client;
         AttackEntityCallback.EVENT.register((playerIn, world, hand, entity, hitResult) -> {
-            if (entity instanceof LivingEntity) {
-                this.player = (PlayerEntity) playerIn;
+            if (entity instanceof LivingEntity livingEntity) {
+                this.target = livingEntity;
                 this.lastAttack = System.currentTimeMillis();
             }
             return ActionResult.PASS;
@@ -29,10 +29,11 @@ public class HealthBarGUI {
     }
 
     public void render(DrawContext context) {
-        if (player == null) return;
+        if (target == null) return;
         if (System.currentTimeMillis() - lastAttack > 5000) return;
 
-        float health = player.getHealth();
+        // Берём хп цели (противника), а не игрока
+        float health = target.getHealth();
         int color = ColorUtil.getColor(health);
         String text = String.format("%.1f", health);
 
