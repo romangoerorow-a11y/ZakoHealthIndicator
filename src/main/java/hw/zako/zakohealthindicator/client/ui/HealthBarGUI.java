@@ -43,9 +43,14 @@ public class HealthBarGUI {
         int x = (screenWidth - textWidth) / 2;
         int y = screenHeight / 2 + 10;
 
-        context.getMatrices().push();
-        context.getMatrices().scale(1.5f, 1.5f, 1.0f);
-        context.drawText(client.textRenderer, text, (int)(x / 1.5f), (int)(y / 1.5f), color, true);
-        context.getMatrices().pop();
+        // Чем меньше хп — тем больше текст (от 1.2 до 2.5)
+float maxHealth = target.getMaxHealth();
+float ratio = 1.0f - (health / maxHealth); // 0.0 = полное хп, 1.0 = мёртв
+float scale = 1.2f + (ratio * 1.3f); // от 1.2 до 2.5
+
+context.getMatrices().push();
+context.getMatrices().scale(scale, scale, 1.0f);
+context.drawText(client.textRenderer, text, (int)(x / scale), (int)(y / scale), color, true);
+context.getMatrices().pop();
     }
 }
